@@ -25,19 +25,23 @@ backup_files=(
     "/home/pi/.arduino15/inventory.yaml"
     "/home/pi/.arduino15/library_index.json"
     "/home/pi/.arduino15/package_esp8266com_index.json"
-    "/home/pi/.arduino15/package_index.json"    
+    "/home/pi/.arduino15/package_index.json"
     "/home/pi/bin"
     "/share/.mlsc"
     "/home/pi/.bashrc"
     "/home/pi/.profile"
     "/home/pi/.ssh"
+    "/home/pi/.gitconfig"
+    "/home/pi/.git-credentials"
+    "/home/pi/server_scripts/"
+    "/etc/X11/openbox/"
 )
 
 
 dest="/home/pi/backup"
 day=$(date +%A)
 hostname=$(hostname -s)
-archive_file="$hostname-$day-2021.tgz"
+archive_file="$hostname-$day-2-2021.tgz"
 
 tar -cvpzf $dest/$archive_file ${backup_files[*]}
 
