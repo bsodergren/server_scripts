@@ -66,7 +66,7 @@ __NEW_PROJECT_DIRNAME=${__NEW_PROJECT_DIRNAME,,}
 
 ## make directory & core directory
 __NEW_PROJECT_HOME="/home/pi/scripts/${__NEW_PROJECT_DIRNAME}"
-__NEW_PROJECT_INC_DIR="${__NEW_PROJECT_HOME}/${__NEW_PROJECT_DIRNAME}_inc"
+__NEW_PROJECT_INC_DIR="${__NEW_PROJECT_HOME}/inc"
 __NEW_PROJECT_INC_CORE="${__NEW_PROJECT_INC_DIR}/core"
 
 #make header 
@@ -158,7 +158,7 @@ then
 
 
     hub init -g
-    hub create 
+    hub create  -p
     echo $?
 
     git add .
