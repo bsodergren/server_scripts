@@ -49,13 +49,10 @@ done
 
 
 __PROJECT_DIR=${__PROJECT_NAME// /_}
-__PROJECT_DIR=${__PROJECT_DIR,,}
-
-__PROJECT_INC_DIR="${__INC_LIB_DIR}/scripts/${__PROJECT_DIR}"
+__PROJECT_INC_DIR="${__PROJECT_HOME}/${__PROJECT_DIR,,}_inc"
 
 __PROJECT_HEADER="${__PROJECT_INC_DIR}/header.inc.sh"
 [[ -f $__PROJECT_HEADER ]] && source "$__PROJECT_HEADER"
-
 
 
 __logr_LOG_DIR="/home/pi/logs"
