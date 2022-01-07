@@ -1,3 +1,7 @@
 #!/bin/bash
-source "/home/pi/scripts/mlsc_scripts/add_usb_device.sh"
+
+__SCRIPT__=$(basename $0)
+__PROJECT__="mlsc_node"
+
+source "/home/pi/scripts/${__PROJECT__}/${__SCRIPT__}"
 

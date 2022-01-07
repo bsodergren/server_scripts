@@ -44,9 +44,9 @@ function run_cmd()
         typeset ret_code
 
         #main.log "Running Command:" 
-        #main.log $cmd
+        main.log $cmd
 
-        eval $cmd
+       eval $cmd
         ret_code=$?
 
         if [ $ret_code == 0 ]
@@ -57,7 +57,6 @@ function run_cmd()
             
 		fi
 	
-
 }
 
 # string.trim
