@@ -1,6 +1,7 @@
 #!/bin/bash
 HOME_DIR="/home/pi"
-SOURCE_DIR="${HOME_DIR}/repo/server_scripts"
+REPO_DIR="${HOME_DIR}/repo"
+SOURCE_DIR="${REPO_DIR}/server_scripts"
 
 function addGit()
 {
@@ -26,25 +27,15 @@ cat > "${HOME_DIR}/.gitconfig" <<EOL
 EOL
 fi
 
-    [ ! -d "${HOME_DIR}/repo" ] && mkdir "${HOME_DIR}/repo"
+    [ ! -d "${REPO_DIR}" ] && mkdir "${REPO_DIR}"
 
     if [ ! -d "${SOURCE_DIR}" ]
     then
-        cd "${HOME_DIR}/repo"
+        cd "${REPO_DIR}"
         git clone https://github.com/bsodergren/server_scripts.git
     fi 
 }
 
-
-function addPlugins()
-{
-    while read -r line
-    do
-        if 
-        ${HOME_DIR}/oprint/bin/pip install $line
-
-    done < "${SOURCE_DIR}/config/plugins.list"
-}
 
 function addAliases()
 {
@@ -69,8 +60,8 @@ function addSambaConf()
 function updateApt()
 {
 
-    sudo apt-get update
-    sudo apt-get -y upgrade
+#    sudo apt-get update
+#    sudo apt-get -y upgrade
     # Install Git:
     sudo apt-get -y install git exa samba  samba-common samba-common-bin
 
@@ -84,7 +75,7 @@ if [ -d "${SOURCE_DIR}" ]; then
 
     addSambaConf
     addAliases
-    addPlugins
+ #   addPlugins
 fi
 
 
