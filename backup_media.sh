@@ -1,7 +1,9 @@
 #!/bin/bash
 
-dest="$HOME/backup"
-sqlBackup="$dest/SQL"
+dest="$HOME/OneDrive/UbuntuBackup"
+sqlBackup="$HOME"
+plexSql="$sqlBackup/plex_web.sql"
+cwpSql="$sqlBackup/cwp.sql"
 
 date=$(date +%F)
 
@@ -11,6 +13,11 @@ archive_file="$dest/$hostname-$date.tgz"
 
 
 [ -e $archive_file ] && rm -- $archive_file
+[ -e $plexSql ] && rm -- $plexSql
+[ -e $cwpSql ] && rm -- $cwpSql
+
+mysqldump --routines plex_web > $plexSql
+mysqldump --routines cwp > $cwpSql
 
 backup_files=(
     "/etc/apache2/conf-available/cwp_apache.conf"
@@ -20,17 +27,20 @@ backup_files=(
     "$HOME/.profile"
     "$HOME/.ssh"
     "$HOME/.git*"
-    "$HOME/.config/yt-dlp/config"
+    "$HOME/.config/yt-dlp"
     "$HOME/.git-credentials"
     "$HOME/.my.cnf"
-
-    "$sqlBackup/*"
+    "$HOME/.config/onedrive"
+    "$HOME/.config/gh"
+    "$cwpSql"
+    "$plexSql"
 )
 
 envFiles=$(find ~/scripts ~/www -iname ".env*")
 iniFiles=$(find ~/scripts ~/www -iname "config.ini")
 
-mysqldump --routines plex_web >"$sqlBackup/plexweb.sql"
-mysqldump --routines cwp >"$sqlBackup/cwp.sql"
+
 
 tar -cvpzf $archive_file ${backup_files[*]} ${envFiles[*]} ${iniFiles[*]}
+
+onedrive -s --upload-only
