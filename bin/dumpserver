@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$HOME/scripts/server_scripts/vendor/bin/var-dump-server
