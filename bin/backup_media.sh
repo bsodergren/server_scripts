@@ -5,7 +5,7 @@ sqlBackup="$HOME"
 plexSql="$sqlBackup/plex_web.sql"
 cwpSql="$sqlBackup/cwp.sql"
 
-date=$(date +%F)
+date=$(date +%F_%I-%M)
 
 hostname=$(hostname -s)
 
@@ -23,6 +23,7 @@ backup_files=(
     "/etc/apache2/conf-available/cwp_apache.conf"
     "/etc/apache2/conf-available/plex_apache.conf"
     "/etc/apache2/sites-available/000-default.conf"
+    "$HOME/bin/AtomicParsley"
     "$HOME/.bash*"
     "$HOME/.profile"
     "$HOME/.ssh"
@@ -43,4 +44,4 @@ iniFiles=$(find ~/scripts ~/www -iname "config.ini")
 
 tar -cvpzf $archive_file ${backup_files[*]} ${envFiles[*]} ${iniFiles[*]}
 
-onedrive -s --upload-only
+# onedrive -s --upload-only

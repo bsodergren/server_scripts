@@ -1,14 +1,11 @@
 #!/bin/bash
-set -e 
+set -e
 __INC_LIB_DIR="/home/pi/bin/inc"
-source  "${__INC_LIB_DIR}/header.sh"
+source "${__INC_LIB_DIR}/header.sh"
 
-
-function print_usage()
-{
+function print_usage() {
 	__genre_list_str=$(printf ",%s" "${__GENRE_LIST[@]}")
 	__genre_list_str=${__genre_list_str:1}
-
 
 	__usage="
 Usage: $(basename "$0") [OPTIONS]
@@ -22,13 +19,12 @@ Options:
 
 }
 
-for arg in "$@"
-do
+for arg in "$@"; do
 	shift
 	case "$arg" in
-		"--new") set -- "$@" "-n" ;;
-        "--github") set -- "$@" "-g" ;;
-		*) set -- "$@" "$arg" ;;
+	"--new") set -- "$@" "-n" ;;
+	"--github") set -- "$@" "-g" ;;
+	*) set -- "$@" "$arg" ;;
 	esac
 done
 
@@ -38,26 +34,26 @@ OPTIND=1
 while getopts "n:g" opt; do
 
 	case "$opt" in
-    "g") __GITHUB=1 ;;
-    "n") __NEW_PROJECT=$OPTARG ;;
-		
-		*)	print_usage >&2
-			exit 1
-			;;
+	"g") __GITHUB=1 ;;
+	"n") __NEW_PROJECT=$OPTARG ;;
+
+	*)
+		print_usage >&2
+		exit 1
+		;;
 	esac
 done
 shift $((OPTIND - 1))
 
 shopt -s nocasematch
 
-
 ### Create Project.
-# create_project -n "Project Name" [options] 
+# create_project -n "Project Name" [options]
 # Add include directory for custom commands.
 # Add data directory for non script includes such as json and text files
-# 
 #
-__NEW_PROJECT_NAME="$__NEW_PROJECT" 
+#
+__NEW_PROJECT_NAME="$__NEW_PROJECT"
 
 ## Comes from the command line input.
 
@@ -69,14 +65,13 @@ __NEW_PROJECT_HOME="/home/pi/scripts/${__NEW_PROJECT_DIRNAME}"
 __NEW_PROJECT_INC_DIR="${__NEW_PROJECT_HOME}/inc"
 __NEW_PROJECT_INC_CORE="${__NEW_PROJECT_INC_DIR}/core"
 
-#make header 
+#make header
 __NEW_PROJECT_OPT="${__NEW_PROJECT_INC_DIR}/getopts.sh"
 __NEW_PROJECT_HEADER="${__NEW_PROJECT_INC_DIR}/header.inc.sh"
 
-
 mkdir -p ${__NEW_PROJECT_INC_CORE}
 
-cat << 'EOF' > ${__NEW_PROJECT_HEADER}
+cat <<'EOF' >${__NEW_PROJECT_HEADER}
 source  "${__PROJECT_INC_DIR}/getopts.sh"
 __PROJECT_INC_CORE="${__PROJECT_INC_DIR}/core"
 
@@ -91,9 +86,7 @@ do
 done
 EOF
 
-
-
-cat << 'EOF' > ${__NEW_PROJECT_OPT}
+cat <<'EOF' >${__NEW_PROJECT_OPT}
 function print_usage()
 {
 	
@@ -135,7 +128,7 @@ shift $((OPTIND - 1))
 shopt -s nocasematch
 EOF
 
-cat << EOF > "${__NEW_PROJECT_HOME}/${__NEW_PROJECT_DIRNAME}.sh"
+cat <<EOF >"${__NEW_PROJECT_HOME}/${__NEW_PROJECT_DIRNAME}.sh"
 #!/bin/bash
 set -e 
 __PROJECT_NAME="${__NEW_PROJECT_NAME}"
@@ -150,18 +143,14 @@ EOF
 touch "${__NEW_PROJECT_INC_CORE}/main.inc.sh"
 chmod +x "${__NEW_PROJECT_HOME}/${__NEW_PROJECT_DIRNAME}.sh"
 
+if [[ -n "${__GITHUB}" ]]; then
+	pushd ${__NEW_PROJECT_HOME}
 
+	hub init -g
+	hub create -p
+	echo $?
 
-if [[ -n "${__GITHUB}" ]]
-then
-    pushd ${__NEW_PROJECT_HOME};
-
-
-    hub init -g
-    hub create  -p
-    echo $?
-
-    git add .
-    git commit -m "first"
-    git push --set-upstream origin master
-fi 
+	git add .
+	git commit -m "first"
+	git push --set-upstream origin master
+fi
